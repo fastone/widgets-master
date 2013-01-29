@@ -1,0 +1,54 @@
+.widgets-master .tabs-panel {
+	height: 200px;
+	overflow: auto;
+	padding: .5em .9em;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #DFDFDF;
+	background-color: #FFFFFF;
+}
+.widgets-master-tabs {
+	margin-bottom: 3px;
+	margin-top: 12px;
+}
+.widgets-master-tabs li {
+	display: inline;
+	padding: 5px;
+}
+
+.widgets-master-tabs li.active {
+	-moz-border-radius: 3px 3px 0 0;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-khtml-border-top-left-radius: 3px;
+	-khtml-border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+
+	border-style: solid solid none;
+	border-width: 1px 1px 0;
+	border-color: #DFDFDF;
+	background-color: #F1F1F1;
+}
+
+.widgets-master-tabs li a {
+	text-decoration: none;
+}
+
+.widgets-master-tabs li.active a {
+	color: #333;
+}
+
+div.widgets-master-box {
+	overflow: auto;
+	padding: .5em .9em;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #DFDFDF;
+	background-color: #F1F1F1;
+	border-top: none;
+}  
+
+.widgets-master-box.extra label {
+	height: 15px;
+}
