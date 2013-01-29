@@ -48,12 +48,12 @@ class Widgets_Master {
 	}
 
 	/**
-	 * 
 	 *
-	 * @param array $instance The widget instance
-	 * @param array $new_instance The widget instance
-	 * @param array $old_instance The widget instance
-	 * @return array $instance The widget instance
+	 *
+	 * @param array   $instance     The widget instance
+	 * @param array   $new_instance The widget instance
+	 * @param array   $old_instance The widget instance
+	 * @return array  $instance     The widget instance
 	 *
 	 * @since 0.1
 	 *
@@ -97,7 +97,7 @@ class Widgets_Master {
 		if ( isset( $_POST[$instance['id_base'] . '-widgets-master-single'] ) ) {
 			$instance['page-single'] = true;
 		}
-		
+
 		// always show widget when nothing selected..
 		$instance['all'] = false;
 		if ( !$instance['page-home'] && !$instance['page-archive'] && !$instance['page-404'] && !$instance['page-search'] && !$instance['page-single'] ) {
@@ -135,14 +135,14 @@ class Widgets_Master {
 		} else {
 			$instance['page-all'] = true;
 		}
-		
+
 		return $instance;
 	}
 
 	/**
-	 * 
 	 *
-	 * @param array $instance The widget instance
+	 *
+	 * @param array   $instance The widget instance
 	 * @return array $instance The widget instance
 	 *
 	 * @since 0.1
@@ -155,63 +155,63 @@ class Widgets_Master {
 		if ( ( is_home() && isset( $instance['page-home'] ) )  || ( is_front_page() && isset( $instance['page-home'] ) ) ) {
 			$show = $instance['page-home'];
 
-		// check for category
+			// check for category
 		} else if ( is_category() ) {
-			$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
-			if ( !$show ) {
-				$show = isset( $instance['cat-all'] ) ? ( $instance['cat-all'] ) : false;
-			}
-
-		// check for taxonomy/term
-		} else if ( is_tax() ) {
-			$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
-			$show = isset( $instance['cat-' . $term->term_id] ) ? ( $instance['cat-' . $term->term_id] ) : false;
-			if ( !$show ) {
-				$show = isset( $instance['cat-all'] ) ? ( $instance['cat-all'] ) : false;
-			}
-
-		// check for archive
-		} else if ( is_archive() && isset( $instance['page-archive'] ) ) {
-			$show = $instance['page-archive'];
-
-		// check for single
-		} else if ( is_single() ) {
-			$type = get_post_type();
-			if ( $type != 'page' and $type != 'post' ) {
-				$show = isset( $instance['type-' . $type] ) ? ( $instance['type-' . $type] ) : false;
-			}
-			if ( !$show ) {
-				$show = isset( $instance['page-single'] ) ? ( $instance['page-single'] ) : false;
-			}
-			if ( !$show ) {
-				global $post;
-				$terms = wp_get_object_terms( $post->ID, get_taxonomies() );
-				foreach ( $terms as $term ) {
-					if ( $show ) {
-						continue;
-					}
-					if ( function_exists( 'icl_object_id' ) ) {
-						$term_id = icl_object_id( $term->term_id, $term->taxonomy, true, $instance['language'] );
-					} else {
-						$term_id = $term->term_id;
-					}
-					$show = isset( $instance['cat-' . $term_id] ) ? ( $instance['cat-' . $term_id] ) : false;
+				$show = isset( $instance['cat-' . get_query_var( 'cat' )] ) ? ( $instance['cat-' . get_query_var( 'cat' )] ) : false;
+				if ( !$show ) {
+					$show = isset( $instance['cat-all'] ) ? ( $instance['cat-all'] ) : false;
 				}
-			}
-			if ( !$show ) {
-				$show = isset( $instance['type-all'] ) ? ( $instance['type-all'] ) : false;				
-			}
-		
-		// check for 404
-		} else if ( is_404() ) {
-			$show = isset( $instance['page-404'] ) ? ( $instance['page-404'] ) : false;
 
-		// check for search
-		} else if ( is_search() ) {
-			$show = isset( $instance['page-search'] ) ? ( $instance['page-search'] ) : false;
+				// check for taxonomy/term
+			} else if ( is_tax() ) {
+				$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+				$show = isset( $instance['cat-' . $term->term_id] ) ? ( $instance['cat-' . $term->term_id] ) : false;
+				if ( !$show ) {
+					$show = isset( $instance['cat-all'] ) ? ( $instance['cat-all'] ) : false;
+				}
 
-		// check for page
-		} else {
+				// check for archive
+			} else if ( is_archive() && isset( $instance['page-archive'] ) ) {
+				$show = $instance['page-archive'];
+
+				// check for single
+			} else if ( is_single() ) {
+				$type = get_post_type();
+				if ( $type != 'page' and $type != 'post' ) {
+					$show = isset( $instance['type-' . $type] ) ? ( $instance['type-' . $type] ) : false;
+				}
+				if ( !$show ) {
+					$show = isset( $instance['page-single'] ) ? ( $instance['page-single'] ) : false;
+				}
+				if ( !$show ) {
+					global $post;
+					$terms = wp_get_object_terms( $post->ID, get_taxonomies() );
+					foreach ( $terms as $term ) {
+						if ( $show ) {
+							continue;
+						}
+						if ( function_exists( 'icl_object_id' ) ) {
+							$term_id = icl_object_id( $term->term_id, $term->taxonomy, true, $instance['language'] );
+						} else {
+							$term_id = $term->term_id;
+						}
+						$show = isset( $instance['cat-' . $term_id] ) ? ( $instance['cat-' . $term_id] ) : false;
+					}
+				}
+				if ( !$show ) {
+					$show = isset( $instance['type-all'] ) ? ( $instance['type-all'] ) : false;
+				}
+
+				// check for 404
+			} else if ( is_404() ) {
+				$show = isset( $instance['page-404'] ) ? ( $instance['page-404'] ) : false;
+
+				// check for search
+			} else if ( is_search() ) {
+				$show = isset( $instance['page-search'] ) ? ( $instance['page-search'] ) : false;
+
+				// check for page
+			} else {
 			global $wp_query;
 			$post_id = $wp_query->get_queried_object_id();
 			$show    = isset( $instance['page-' . $post_id] ) ? ( $instance['page-' . $post_id] ) : false;
@@ -223,17 +223,17 @@ class Widgets_Master {
 		// Show widget when no options set.
 		if ( !$show && isset( $instance['all'] ) && $instance['all'] == true ) {
 			return $instance;
-		
-		// Show widget when options never saved. ( fist time use )
-		} else if ( !$show && !isset( $instance['all'] ) ) {
-			return $instance;
 
-		// Show widget when options say so.
-		} else if ( $show ) {
-			return $instance;
-		
-		// Don't show widget
-		} else {
+			// Show widget when options never saved. ( fist time use )
+		} else if ( !$show && !isset( $instance['all'] ) ) {
+				return $instance;
+
+				// Show widget when options say so.
+			} else if ( $show ) {
+				return $instance;
+
+				// Don't show widget
+			} else {
 			return false;
 		}
 
@@ -241,10 +241,11 @@ class Widgets_Master {
 
 	/**
 	 *
+	 *
 	 * @since 0.1
 	 */
 	function widget_options( $widget, $return, $instance ) {
-		?>
+?>
 		<div id="<?php echo $widget->id_base; ?>-widgets-master" class="widgets-master">
 			<h4 class="widgets-master-heading"><?php echo __( 'Widgets Master Display Conditions', 'widgets-master' ); ?></h4>
 			<ul id="<?php echo $widget->id_base; ?>-widgets-master-tabs" class="widgets-master-tabs">
@@ -280,6 +281,7 @@ class Widgets_Master {
 
 	/**
 	 *
+	 *
 	 * @since 0.1
 	 */
 	function widget_page_list( $widget, $instance ) {
@@ -291,6 +293,7 @@ class Widgets_Master {
 	}
 
 	/**
+	 *
 	 *
 	 * @since 0.1
 	 */
@@ -311,6 +314,7 @@ class Widgets_Master {
 	}
 
 	/**
+	 *
 	 *
 	 * @since 0.1
 	 */
