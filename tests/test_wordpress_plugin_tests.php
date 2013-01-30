@@ -16,18 +16,20 @@ class WP_Test_WordPress_Plugin_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Verify that WordPress is installed and is the version that we requested
+	 * If these tests are being run on Travis CI, verify that the version of
+	 * WordPress installed is the version that we requested.
 	 */
 	function test_wp_version() {
 
 		if ( !getenv( 'TRAVIS_PHP_VERSION' ) )
-			$this->markTestSkipped( 'Not running on Travis CI' );
-
-		if ( getenv( 'TRAVIS_PHP_VERSION' ) == '5.2' )
-			$this->markTestSkipped( 'No SSL support in this PHP version' );
+			$this->markTestSkipped( 'Test skipped since Travis CI was not detected.' );
 
 		//grab the requested version
 		$requested_version = getenv( 'WP_VERSION' );
+
+		// check that we have the https wrapper (php 5.2 on travis-ci does not)
+		if ( !in_array( 'https', stream_get_wrappers() ) )
+			$this->markTestSkipped( 'Test skipped since https wrapper unavailable.' );
 
 		//trunk is always "master" in github terms, but WordPress has a specific way of describing it
 		//grab the exact version number to verify that we're on trunk
