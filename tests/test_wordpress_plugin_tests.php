@@ -23,13 +23,16 @@ class WP_Test_WordPress_Plugin_Tests extends WP_UnitTestCase {
 		if ( !getenv( 'TRAVIS_PHP_VERSION' ) )
 			$this->markTestSkipped( 'Not running on Travis CI' );
 
+		if ( getenv( 'TRAVIS_PHP_VERSION' ) == '5.2' )
+			$this->markTestSkipped( 'No SSL support in this PHP version' );
+
 		//grab the requested version
 		$requested_version = getenv( 'WP_VERSION' );
 
 		//trunk is always "master" in github terms, but WordPress has a specific way of describing it
 		//grab the exact version number to verify that we're on trunk
 		if ( $requested_version == 'master' ) {
-			$file = file_get_contents( 'http://raw.github.com/WordPress/WordPress/master/wp-includes/version.php' );
+			$file = file_get_contents( 'https://raw.github.com/WordPress/WordPress/master/wp-includes/version.php' );
 			preg_match( '#\$wp_version = \'([^\']+)\';#', $file, $matches );
 			$requested_version = $matches[1];
 		}
