@@ -5,7 +5,7 @@ Plugin URI: http://www.jeroenvanwissen.nl/weblog/wordpress/widgets-master
 Description: Control the visibility of Widgets by Categories/Taxonomies, Pages, Post types and more.
 Author: Jeroen van Wissen
 Author URI: http://www.jeroenvanwissen.nl
-Version: 0.1
+Version: 0.2
 
 ------------------------------------------------------------------------
 Copyright 2012 Jeroen van Wissen
@@ -25,22 +25,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+/**
+ * Widgets Master class
+ *
+ * */
 class Widgets_Master {
-	static $version = '0.1';
 
+	/**
+	 * version
+	 *
+	 * @var string
+	 * */
+	protected $version = '0.2';
+
+	/**
+	 * constructor
+	 *
+	 * @since 0.1
+	 * @version 0.2
+	 * */
 	function __construct() {
-		add_action( 'admin_enqueue_scripts', array( &$this, 'enqueue_scripts' ) );
-		add_action( 'in_widget_form', array( &$this, 'widget_options' ), 10, 3 );
-		add_filter( 'widget_display_callback', array( &$this, 'widget_display_callback' ), 10, 1 );
-		add_filter( 'widget_update_callback', array( &$this, 'widget_update_callback' ), 10, 2 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'in_widget_form', array( $this, 'widget_options' ), 10, 3 );
+		add_filter( 'widget_display_callback', array( $this, 'widget_display_callback' ), 10, 1 );
+		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 2 );
 	}
 
 	/**
 	 * Load the CSS and JavaScripts needed.
 	 *
 	 * @since 0.1
-	 */
-	function enqueue_scripts() {
+	 * @version 0.1
+	 * */
+	public function enqueue_scripts() {
 		if ( is_admin() ) {
 			wp_enqueue_style( 'widgets-master', plugins_url( '/css/widgets-master.css', __FILE__ ), array(), $this->version, 'all' );
 			wp_enqueue_script( 'widgets-master', plugins_url( '/js/widgets-master.js', __FILE__ ), array( 'jquery' ), $this->version, 'all' );
@@ -48,17 +65,16 @@ class Widgets_Master {
 	}
 
 	/**
-	 *
+	 * Widget update callback function
 	 *
 	 * @param array   $instance     The widget instance
 	 * @param array   $new_instance The widget instance
 	 * @param array   $old_instance The widget instance
-	 * @return array  $instance     The widget instance
-	 *
+	 * @return array $instance The widget instance
 	 * @since 0.1
-	 *
-	 */
-	function widget_update_callback( $instance, $new_instance ) {
+	 * @version 0.1
+	 * */
+	public function widget_update_callback( $instance, $new_instance ) {
 		$instance = $new_instance;
 
 		// wpml compatibility
@@ -140,15 +156,14 @@ class Widgets_Master {
 	}
 
 	/**
-	 *
+	 * Widget display callback function
 	 *
 	 * @param array   $instance The widget instance
-	 * @return array $instance The widget instance
-	 *
+	 * @return mixed $instance The widget instance or false
 	 * @since 0.1
-	 *
-	 */
-	function widget_display_callback( $instance ) {
+	 * @version 0.1
+	 * */
+	public function widget_display_callback( $instance ) {
 		$show = false;
 
 		// check for home / frontpage
@@ -240,11 +255,15 @@ class Widgets_Master {
 	}
 
 	/**
+	 * Widget Options function
 	 *
-	 *
+	 * @param object  $widget
+	 * @param array   $return
+	 * @param array   $instance
 	 * @since 0.1
-	 */
-	function widget_options( $widget, $return, $instance ) {
+	 * @version 0.1
+	 * */
+	public function widget_options( $widget, $return, $instance ) {
 ?>
 		<div id="<?php echo $widget->id_base; ?>-widgets-master" class="widgets-master">
 			<h4 class="widgets-master-heading"><?php echo __( 'Widgets Master Display Conditions', 'widgets-master' ); ?></h4>
@@ -280,11 +299,14 @@ class Widgets_Master {
 	}
 
 	/**
+	 * Widget Page list function
 	 *
-	 *
+	 * @param object  $widget
+	 * @param array   $instance
 	 * @since 0.1
-	 */
-	function widget_page_list( $widget, $instance ) {
+	 * @version 0.2
+	 * */
+	public function widget_page_list( $widget, $instance ) {
 		$pages = get_pages();
 		foreach ( $pages as $page ) {
 			$checked = isset( $instance['page-' . $page->ID] ) ? 'checked=checked' : '';
@@ -293,11 +315,14 @@ class Widgets_Master {
 	}
 
 	/**
+	 * Widget Category list function
 	 *
-	 *
+	 * @param object  $widget
+	 * @param array   $instance
 	 * @since 0.1
-	 */
-	function widget_category_list( $widget, $instance ) {
+	 * @version 0.2
+	 * */
+	public function widget_category_list( $widget, $instance ) {
 		$taxonomies = get_taxonomies( array( 'public' => true ), 'names', 'and' );
 		foreach ( $taxonomies as $taxonomy ) {
 			echo '<h3>' . $taxonomy . '</h3>';
@@ -314,11 +339,14 @@ class Widgets_Master {
 	}
 
 	/**
+	 * Widget PostTypes list function
 	 *
-	 *
+	 * @param object  $widget
+	 * @param array   $instance
 	 * @since 0.1
-	 */
-	function widget_posttypes_list( $widget, $instance ) {
+	 * @version 0.2
+	 * */
+	public function widget_posttypes_list( $widget, $instance ) {
 		$posttypes = get_post_types( array( '_builtin' => false ) );
 		foreach ( $posttypes as $posttype ) {
 			$checked = isset( $instance['type-' . $posttype] ) ? 'checked=checked' : '';
@@ -326,6 +354,6 @@ class Widgets_Master {
 		}
 	}
 
-}
+} // END class Widgets_Master
 
 $widgets_master = new Widgets_Master();

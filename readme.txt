@@ -3,8 +3,8 @@ Contributors: jvwissen
 Donate link: http://www.jeroenvanwissen.nl/weblog/wordpress/widgets-master
 Tags: widgets, category, taxonomy, post, page, posttype
 Requires at least: 3.3
-Tested up to: 3.3
-Stable tag: 0.1
+Tested up to: 3.5.1
+Stable tag: 0.2
 
 Easily manage the visibility of widgets.
 
@@ -23,6 +23,10 @@ With Widgets Master you can easily manage the visibility of Widgets by Categorie
 1. Widgets Master display settings
 
 == Changelog ==
+
+= 0.2 (2013-4-9) =
+* fixed Undefined property bug
+* code clean-up
 
 = 0.1 (2012-4-9) =
 * Initial release
